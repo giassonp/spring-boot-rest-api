@@ -25,8 +25,8 @@ public class GameController {
     }
 
     @GetMapping()
-    public List<Game> getAllGames(@RequestParam(value = "search", required = false) String search){
-        return search != null ? gameService.getAllGames(getGameSpecification(search)) : gameService.getAllGames(null);
+    public List<Game> getAllGames(@RequestParam(value = "title", required = false) String title){
+        return gameService.getAllGames(title);
     }
 
     @GetMapping(value = "/{id}")

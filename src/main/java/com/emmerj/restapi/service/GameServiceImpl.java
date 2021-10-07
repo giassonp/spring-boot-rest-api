@@ -2,6 +2,7 @@ package com.emmerj.restapi.service;
 
 import com.emmerj.restapi.model.Game;
 import com.emmerj.restapi.model.GameRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -24,11 +25,9 @@ public class GameServiceImpl implements GameService {
         this.gameRepository = gameRepository;
     }
 
-    // TODO : Finish search through Specification or use another search implementation
-
     @Override
-    public List<Game> getAllGames(Specification<Game> spec) {
-        return gameRepository.findAll();
+    public List<Game> getAllGames(String title) {
+        return StringUtils.isNotBlank(title) ? gameRepository.findAll(titleLike(title)) : gameRepository.findAll();
     }
 
     @Override
@@ -68,5 +67,8 @@ public class GameServiceImpl implements GameService {
                 .collect(Collectors.toList());
     }
 
-
+    private Specification<Game> titleLike(String title){
+        return (root, query, criteriaBuilder)
+                -> criteriaBuilder.like(root.get("title"), "%"+title+"%");
+    }
 }
