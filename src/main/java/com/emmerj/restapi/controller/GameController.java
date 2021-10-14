@@ -58,10 +58,4 @@ public class GameController {
     public void addGame(@RequestBody Game game){
         gameService.addGame(game);
     }
-
-    private Specification<Game> getGameSpecification(String search) {
-        Node rootNode = new RSQLParser().parse(search);
-        Specification<Game> spec = rootNode.accept(new CustomRsqlVisitor<Game>());
-        return spec;
-    }
 }
